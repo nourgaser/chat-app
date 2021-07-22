@@ -5,16 +5,16 @@ const roomInput = document.getElementById("room-input");
 const chatContainer = document.getElementById("chat-container");
 const socket = io("http://localhost:3000");
 
+var username;
 socket.on("connect", () => {
-  console.log(`Connected with ID: ${socket.id}.`);
+  username = prompt("What's your name?");
+  if (username === "" || username === null) username = "Unknown";
+  socket.emit("register-username", username);
+  chatContainer.innerHTML += `<p><strong>You joined the server with the username ${username}.</strong></p>`;
 });
 
 socket.on("recieveMessage", (msg) => {
-  if (msg.room != "") {
-    chatContainer.innerHTML += `<p>${msg.sender} - ${msg.room}: ${msg.content}`;
-  } else {
-    chatContainer.innerHTML += `<p>${msg.sender} - Public: ${msg.content}`;
-  }
+  addMessage(msg.sender, msg.room, msg.content);  
 });
 
 sendButton.addEventListener("click", (e) => {
@@ -22,20 +22,18 @@ sendButton.addEventListener("click", (e) => {
     let msg = {
       content: messageInput.value,
       room: roomInput.value,
-      sender: socket.id,
     };
-
     socket.emit("sendMessage", msg);
-
-    if (msg.room != "") {
-      chatContainer.innerHTML += `<p>You - ${msg.room}: ${msg.content}`;
-    } else {
-      chatContainer.innerHTML += `<p>You - Public: ${msg.content}`;
-    }
+    addMessage("You", msg.room, msg.content);
     messageInput.value = "";
   }
 });
 
-joinButton.addEventListener('click', e => {
+joinButton.addEventListener("click", (e) => {
   socket.emit("joinRoom", roomInput.value);
 });
+
+var addMessage = (sender, room, message) => {
+  if (room === "") room = "Public";
+  chatContainer.innerHTML += `<p><strong>${sender} - ${room}:</strong> ${message}</p>`;
+};

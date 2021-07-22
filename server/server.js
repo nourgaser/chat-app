@@ -1,35 +1,38 @@
 const io = require("socket.io")(3000, {
   cors: {
-    origin: [
-      "http://localhost:5500",
-      "http://localhost:5050",
-    ],
+    origin: "*",
   },
 });
+
+const usernames = [];
+
 io.on("connection", (socket) => {
   console.log(`Socket ${socket.id} connected.`);
-  
-  socket.on('sendMessage', msg => {
+  socket.once("register-username", (username) => {
+    usernames[socket.id] = username;
+  });
+
+  socket.on("sendMessage", (msg) => {
+    msg.sender = usernames[socket.id];
     if (msg.room != "") {
       socket.to(msg.room).emit("recieveMessage", msg);
-    }
-    else {
+    } else {
       socket.broadcast.emit("recieveMessage", msg);
     }
   });
-  
-  socket.on("joinRoom", room => {
+
+  socket.on("joinRoom", (room) => {
     socket.join(room);
     socket.emit("recieveMessage", {
       content: "You joined room " + room + ".",
       sender: "Server",
-      room: "Internal"
+      room: "Internal",
     });
   });
 
-
   socket.on("disconnect", () => {
     console.log(`Client ${socket.id} disconnect.`);
+    delete usernames[socket.id];
   });
 });
 
