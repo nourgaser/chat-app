@@ -10,6 +10,11 @@ io.on("connection", (socket) => {
   console.log(`Socket ${socket.id} connected.`);
   socket.once("register-username", (username) => {
     usernames[socket.id] = username;
+    socket.broadcast.emit('recieveMessage', {
+      sender: "Server",
+      room: "Internal",
+      content: username + " joined the server."
+    });
   });
 
   socket.on("sendMessage", (msg) => {
@@ -32,6 +37,11 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log(`Client ${socket.id} disconnect.`);
+    socket.broadcast.emit('recieveMessage', {
+      sender: "Server",
+      room: "Internal",
+      content: usernames[socket.id] + " left the server."
+    });
     delete usernames[socket.id];
   });
 });
