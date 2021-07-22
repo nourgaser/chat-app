@@ -34,6 +34,5 @@ joinButton.addEventListener("click", (e) => {
 });
 
 var addMessage = (sender, room, message) => {
-  if (room === "") room = "Public";
-  chatContainer.innerHTML += `<p><strong>${sender} - ${room}:</strong> ${message}</p>`;
+  chatContainer.innerHTML += `<p><strong>${sender} - ${(room === '')?'Public':room}:</strong> ${message}</p>`;
 };
