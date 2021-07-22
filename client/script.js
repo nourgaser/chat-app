@@ -1,4 +1,5 @@
-const button = document.getElementById("submit");
+const sendButton = document.getElementById("sendButton");
+const joinButton = document.getElementById("joinButton");
 const messageInput = document.getElementById("message-input");
 const roomInput = document.getElementById("room-input");
 const chatContainer = document.getElementById("chat-container");
@@ -16,7 +17,7 @@ socket.on("recieveMessage", (msg) => {
   }
 });
 
-button.addEventListener("click", (e) => {
+sendButton.addEventListener("click", (e) => {
   if (messageInput.value != "") {
     let msg = {
       content: messageInput.value,
@@ -33,4 +34,8 @@ button.addEventListener("click", (e) => {
     }
     messageInput.value = "";
   }
+});
+
+joinButton.addEventListener('click', e => {
+  socket.emit("joinRoom", roomInput.value);
 });

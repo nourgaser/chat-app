@@ -18,6 +18,16 @@ io.on("connection", (socket) => {
     }
   });
   
+  socket.on("joinRoom", room => {
+    socket.join(room);
+    socket.emit("recieveMessage", {
+      content: "You joined room " + room + ".",
+      sender: "Server",
+      room: "Internal"
+    });
+  });
+
+
   socket.on("disconnect", () => {
     console.log(`Client ${socket.id} disconnect.`);
   });
