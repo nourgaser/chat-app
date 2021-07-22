@@ -8,7 +8,7 @@ const socket = io("http://localhost:3000");
 var username;
 socket.on("connect", () => {
   username = prompt("What's your name?");
-  if (username === "" || username === null) username = "Unknown";
+  if (username.trim() === "" || username === null) username = "Unknown";
   socket.emit("register-username", username);
   chatContainer.innerHTML += `<p><strong>You joined the server with the username ${username}.</strong></p>`;
 });
@@ -18,7 +18,7 @@ socket.on("recieveMessage", (msg) => {
 });
 
 sendButton.addEventListener("click", (e) => {
-  if (messageInput.value != "") {
+  if (messageInput.value.trim() != "") {
     let msg = {
       content: messageInput.value,
       room: roomInput.value,
