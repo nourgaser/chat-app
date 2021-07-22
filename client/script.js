@@ -8,7 +8,7 @@ const socket = io("http://localhost:3000");
 var username;
 socket.on("connect", () => {
   username = prompt("What's your name?");
-  if (username.trim() === "" || username === null) username = "Unknown";
+  if (username.trim() === "" || username === null) username = "anonymous";
   socket.emit("register-username", username);
   chatContainer.innerHTML += `<p><strong>You joined the server with the username ${username}.</strong></p>`;
 });
