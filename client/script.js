@@ -20,8 +20,8 @@ socket.on("recieveMessage", (msg) => {
 sendButton.addEventListener("click", (e) => {
   if (messageInput.value.trim() != "") {
     let msg = {
-      content: messageInput.value,
-      room: roomInput.value,
+      content: messageInput.value.trim(),
+      room: roomInput.value.trim(),
     };
     socket.emit("sendMessage", msg);
     addMessage("You", msg.room, msg.content);
