@@ -11,7 +11,7 @@ body {
 body {
   display: flex;
   flex-direction: column;
-  background: rgb(255, 255, 255);
+  background: #fff;
 }
 .container {
   height: 90%;
