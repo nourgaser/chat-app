@@ -14,7 +14,7 @@ socket.on("connect", () => {
 });
 
 socket.on("recieveMessage", (msg) => {
-  addMessage({sender: "You", room: msg.room, message: msg.content}); 
+  addMessage({sender: msg.sender, room: msg.room, message: msg.content}); 
 });
 
 sendButton.addEventListener("click", (e) => {
