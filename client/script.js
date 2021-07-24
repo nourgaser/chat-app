@@ -10,8 +10,9 @@ var socket;
 document.querySelector(".username-btn").addEventListener("click", () => {
   username = document.querySelector(".username-input").value;
   document.querySelector(".init").style.display = "none";
-  console.log(username);
-  socket = io("http://localhost:3000");
+  
+  //connect to server then add listeners to the socket and the buttons
+  socket = io("http://localhost:3000"); 
   addSocketListeners();
   addButtonListeners();
 });
@@ -23,7 +24,6 @@ const addMessage = ({ sender, room, message }) => {
     room === "" ? "Public" : room
   }:</strong> ${message}</p>`;
 };
-
 const addSocketListeners = () => {
   socket.on("connect", () => {
     if (username.trim() === "" || username === null) username = "anonymous";
