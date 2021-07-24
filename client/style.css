@@ -12,7 +12,9 @@ body {
   align-items: center;
   font-family: "Roboto", sans-serif;
 }
-
+.message.server{
+  color: gray;
+}
 main {
   /* filter: blur(8px); */
   /* transition: filter .3s ease-in-out; */

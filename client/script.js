@@ -19,16 +19,16 @@ document.querySelector(".username-btn").addEventListener("click", () => {
 
 const addMessage = ({ sender, room, message }) => {
   chatContainer.innerHTML += `<p class='message ${
-    sender === "You" ? "self" : "other"
+    (sender === "You" )? "self" : (sender=="Server")? "server": "other"
   }'><strong>${sender}@${
-    room === "" ? "Public" : room
+    (room === "" )? "Public" : room
   }:</strong> ${message}</p>`;
 };
 const addSocketListeners = () => {
   socket.on("connect", () => {
     if (username.trim() === "" || username === null) username = "anonymous";
     socket.emit("register-username", username);
-    chatContainer.innerHTML += `<p><strong>You joined the server with the username ${username}.</strong></p>`;
+    chatContainer.innerHTML += `<p class='message server'><strong>You joined the server with the username ${username}.</strong></p>`;
   });
 
   socket.on("recieveMessage", (msg) => {
